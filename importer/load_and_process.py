@@ -1,9 +1,13 @@
 import os
 
 from langchain_community.document_loaders import WebBaseLoader
-from lanchain_community.embeddings import OpenAIEmbeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
 
-from config import EMBEDDING_MODEL
+# Set the USER_AGENT environment variable
+os.environ['USER_AGENT'] = 'MyCustomUserAgent/1.0'
+
 
 URLs=[
     'https://www.promtior.ai/',
@@ -15,9 +19,13 @@ URLs=[
 
 loader = WebBaseLoader(URLs)
 docs = loader.load()
-print(docs)
 
-OpenAIEmbeddings(
-    model=EMBEDDING_MODEL,
-)
+text_splitter = RecursiveCharacterTextSplitter()
 
+chunks = text_splitter.split_documents(docs)
+
+embeddings=HuggingFaceEmbeddings()
+
+vector = FAISS.from_documents(chunks, embeddings)
+
+retriever = vector.as_retriever()
