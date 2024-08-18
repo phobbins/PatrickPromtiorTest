@@ -1,6 +1,16 @@
+import os
+
+# Set the USER_AGENT environment variable to specify a custom user agent for HTTP requests
+os.environ['USER_AGENT'] = 'MyCustomUserAgent/1.0'
+
+# Supress the warning from Hugging Face transformers library, specifically about the clean_up_tokenization_spaces parameter
+import warnings
+warnings.filterwarnings("ignore", message="`clean_up_tokenization_spaces` was not set")
+
+
 from typing import TypedDict
 from operator import itemgetter
-import os
+
 
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -8,11 +18,8 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.messages import HumanMessage, AIMessage
 from langchain_community.llms import Ollama
 
-# Set the USER_AGENT environment variable to specify a custom user agent for HTTP requests
-os.environ['USER_AGENT'] = 'MyCustomUserAgent/1.0'
 
 # URLs to scrape content from
 URLs = [
@@ -63,14 +70,16 @@ class RagInput(TypedDict):
 
 # Define the final processing chain for the RAG system
 final_chain = (
-    {
+    { 
         "context": itemgetter("question") | retriever,  # Retrieve context based on the question
         "question": itemgetter("question")              # Extract the question
-    } 
+    }
     | ANSWER_PROMPT    # Use the prompt template to format the input
     | llm              # Generate an answer using the language model
     | StrOutputParser() # Parse the output into a string
 ).with_types(input_type=RagInput)  # Define the expected input type
+
+
 
 
 
