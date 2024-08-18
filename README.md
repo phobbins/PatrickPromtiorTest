@@ -1,79 +1,61 @@
 # PatrickPromtior
 
+## Project Overview
+
+It is a Retrieval-Augmented Generation (RAG) service designed to answer questions based on content scraped from specified websites. It uses the LlaMA2 model via the Ollama API, integrating with FastAPI for serving the responses.
+
 ## Installation
 
-Install the LangChain CLI if you haven't yet
+### Prerequisites
 
-```bash
-pip install -U langchain-cli
-```
+- Python 3.8 or higher
+- FastAPI
+- Uvicorn
+- LangChain and its dependencies
+- [Ollama](https://ollama.com) with the LlaMA2 model
+- Optional: Poetry for dependency management
 
-## Adding packages
+### Setup
 
-```bash
-# adding packages from 
-# https://github.com/langchain-ai/langchain/tree/master/templates
-langchain app add $PROJECT_NAME
+1. Clone the Repository:
 
-# adding custom GitHub repo packages
-langchain app add --repo $OWNER/$REPO
-# or with whole git string (supports other git providers):
-# langchain app add git+https://github.com/hwchase17/chain-of-verification
+    ```bash
+    git clone https://github.com/yourusername/patrickpromtior.git
+    ```
 
-# with a custom api mount point (defaults to `/{package_name}`)
-langchain app add $PROJECT_NAME --api_path=/my/custom/path/rag
-```
+2. Install the required packages:
 
-Note: you remove packages by their api path
+    ```bash
+    pip install fastapi uvicorn langchain langchain_core langchain_community langchain_huggingface
+    ```
 
-```bash
-langchain app remove my/custom/path/rag
-```
+    If using Poetry:
 
-## Setup LangSmith (Optional)
-LangSmith will help us trace, monitor and debug LangChain applications. 
-You can sign up for LangSmith [here](https://smith.langchain.com/). 
-If you don't have access, you can skip this section
+    ```bash
+    poetry install
+    ```
+
+3. Ensure Ollama and the LlaMA2 Model Server Are Running:
+
+    Follow the instructions on the [Ollama website](https://ollama.com) to set up and run the Ollama server with the LlaMA2 model.
 
 
-```shell
-export LANGCHAIN_TRACING_V2=true
-export LANGCHAIN_API_KEY=<your-api-key>
-export LANGCHAIN_PROJECT=<your-project>  # if not specified, defaults to "default"
-```
+## Usage
 
-## Launch LangServe
+1. Start the FastAPI server:
 
-```bash
-langchain serve
-```
+    ```bash
+    poetry run langchain serve
+    ```
 
-## Running in Docker
+    If you're not using Poetry, you can start the server directly with Uvicorn:
 
-This project folder includes a Dockerfile that allows you to easily build and host your LangServe app.
+    ```bash
+    uvicorn app.main:app --host 0.0.0.0 --port 8000
+    ```
 
-### Building the Image
+2. Access the server at:
 
-To build the image, you simply:
-
-```shell
-docker build . -t my-langserve-app
-```
-
-If you tag your image with something other than `my-langserve-app`,
-note it for use in the next step.
-
-### Running the Image Locally
-
-To run the image, you'll need to include any environment variables
-necessary for your application.
-
-In the below example, we inject the `OPENAI_API_KEY` environment
-variable with the value set in my local environment
-(`$OPENAI_API_KEY`)
-
-We also expose port 8080 with the `-p 8080:8080` option.
-
-```shell
-docker run -e OPENAI_API_KEY=$OPENAI_API_KEY -p 8080:8080 my-langserve-app
-```
+    ```text
+    http://localhost:8000/rag/playground/
+    ```
