@@ -23,4 +23,4 @@ if __name__ == "__main__":
     import uvicorn
 
     # Run the FastAPI application using Uvicorn server
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run(app, host="localhost", port=8080)
