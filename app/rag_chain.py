@@ -55,7 +55,7 @@ template = """
 Answer given the following context:
 {context}
 
-Question: {question}
+Question about Promtior: {question}
 """
 
 # Initialize a prompt template using the defined template
