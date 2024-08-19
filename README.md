@@ -51,7 +51,7 @@ It is a Retrieval-Augmented Generation (RAG) service designed to answer question
     If you're not using Poetry, you can start the server directly with Uvicorn:
 
     ```bash
-    uvicorn app.main:app --host 0.0.0.0 --port 8000
+    uvicorn app.server:app --host 0.0.0.0 --port 8000
     ```
 
 2. Access the server at:
