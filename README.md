@@ -51,11 +51,11 @@ It is a Retrieval-Augmented Generation (RAG) service designed to answer question
     If you're not using Poetry, you can start the server directly with Uvicorn:
 
     ```bash
-    uvicorn app.server:app --host 0.0.0.0 --port 8080 
+    uvicorn app.server:app --host 0.0.0.0 --port 8000 
     ```
 
 2. Access the server at:
 
     ```text
-    http://localhost:8080/rag/playground/
+    http://localhost:8000/rag/playground/
     ```
